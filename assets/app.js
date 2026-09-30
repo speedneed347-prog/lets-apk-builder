@@ -1,5 +1,5 @@
 /* Let-S APK Builder — production frontend API client */
-const API_BASE = (window.API_BASE || "https://lets-apk-builder.onrender.com").replace(/\/+$/, "");
+const API_BASE = (window.API_BASE || "https://lets-apk-builder-backend.onrender.com").replace(/\/+$/, "");
 const API_TIMEOUT_MS = 30000;
 
 const adminAuth = {
