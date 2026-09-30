@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Downloads — Let-S APK Builder</title><link rel="stylesheet" href="assets/style.css?v=20"></head><body>
+<header class="nav"><div class="brand">Let-S <span>APK Builder</span></div><nav><a href="index.html">Home</a><a href="build.html">Build</a><a href="builds.html">My Builds</a><a href="downloads.html" class="active">Downloads</a><a href="admin-login.html" id="adminNavLink">Admin</a></nav></header>
+<main class="container container-wide"><div class="page-head"><div><h1>Downloads</h1><p>Your completed build artifacts.</p></div><button class="btn secondary" id="refresh">🔄 Refresh</button></div><div id="message"></div><div class="card" id="list"><div class="empty-state">Loading…</div></div></main>
+<script src="assets/app.js?v=20"></script><script>
+const list=document.getElementById("list"),msg=document.getElementById("message");
+function esc(x){return escapeHtml(x)}
+async function load(){list.innerHTML='<div class="empty-state">Loading…</div>';msg.innerHTML="";try{const bs=await api.listBuilds(100),done=bs.filter(b=>b.status==="completed"&&(b.artifactUrl||b.apkUrl));
+if(!done.length){list.innerHTML='<div class="empty-state">No completed artifacts yet.<br><br><a class="btn" href="build.html">Create a build →</a></div>';return}
+list.innerHTML=done.map(b=>{const c=b.config||{},t=artifactLabel(b.artifactType||c.buildFormat);return`<div class="download-row"><div><div class="build-title">${esc(c.appName||"Untitled")} <span class="type-badge">${t}</span></div><div class="build-sub">${esc(c.packageName||"")} · v${esc(c.versionName||"")} · ${esc(formatDate(b.completedAt||b.createdAt))}</div><div class="build-sub">${esc(b.artifactFileName||"")} · ${esc(formatBytes(b.artifactSizeBytes))}</div></div><div class="download-actions"><a class="btn success-btn" href="${esc(api.downloadUrl(b.id))}">⬇ Download ${t}</a><button class="btn ghost small" data-url="${esc(b.artifactUrl||b.apkUrl||"")}>Copy URL</button></div></div>`}).join("");
+list.querySelectorAll("[data-url]").forEach(btn=>btn.onclick=async()=>{try{await navigator.clipboard.writeText(btn.dataset.url);msg.innerHTML='<div class="success-box">✓ Release URL copied.</div>'}catch{msg.innerHTML='<div class="error-box">Could not copy URL.</div>'}});
+}catch(e){msg.innerHTML=`<div class="error-box">❌ ${esc(e.message)}</div>`;list.innerHTML=""}}
+document.getElementById("refresh").onclick=load;load();
+</script></body></html>

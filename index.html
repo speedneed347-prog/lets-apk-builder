@@ -1,0 +1,14 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Build signed Android APK and AAB apps"><title>Let-S APK Builder</title><link rel="stylesheet" href="assets/style.css?v=20"></head><body>
+<header class="nav"><div class="brand">Let-S <span>APK Builder</span></div><nav><a href="index.html" class="active">Home</a><a href="build.html">Build</a><a href="builds.html">My Builds</a><a href="downloads.html">Downloads</a><a href="admin-login.html" id="adminNavLink">Admin</a></nav></header>
+<section class="hero"><div class="eyebrow">⚙️ Production build platform</div><h1>Turn your website into a <span class="grad">real Android app</span></h1><p>Build signed APKs for direct installation or AABs for Play publishing. Choose online, offline, hybrid or native modules, then watch the build live.</p><div class="hero-actions"><a href="build.html" class="btn">🚀 Start building</a><a href="builds.html" class="btn secondary">View builds</a></div><div class="platform-status" id="platformStatus">Checking build service…</div></section>
+<main class="container container-wide"><div class="features">
+<div class="card feature"><div class="feature-icon">📦</div><h3>APK + AAB</h3><p>Signed APK downloads and Android App Bundles from one build form.</p></div>
+<div class="card feature"><div class="feature-icon">⚡</div><h3>Queued pipeline</h3><p>Persistent queue, Gradle compilation, signing and release artifact delivery.</p></div>
+<div class="card feature"><div class="feature-icon">📡</div><h3>Live status</h3><p>Build steps, logs, history, SHA-256 and artifact metadata in one place.</p></div>
+<div class="card feature"><div class="feature-icon">🌐</div><h3>4 app modes</h3><p>Online, offline, hybrid and native module builds.</p></div>
+<div class="card feature"><div class="feature-icon">🔐</div><h3>Production security</h3><p>Signed callbacks, internal authentication, rate limits and ownership checks.</p></div>
+<div class="card feature"><div class="feature-icon">🧩</div><h3>Native modules</h3><p>Add common features or authenticated custom Kotlin/Java modules.</p></div>
+</div><div class="card quick"><div><h2>Ready to build?</h2><p>Configure your app in the browser and let the backend handle the build queue.</p></div><a href="build.html" class="btn">Create build →</a></div></main>
+<footer>Let-S APK Builder · Production frontend</footer>
+<script src="assets/app.js?v=20"></script><script>api.platform().then(d=>document.getElementById("platformStatus").innerHTML='<span class="online-dot"></span> Build service online · contract v'+escapeHtml(d.contractVersion||"1")).catch(()=>document.getElementById("platformStatus").innerHTML='<span class="offline-dot"></span> Build service unavailable — try again later');</script>
+</body></html>

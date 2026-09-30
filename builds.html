@@ -1,0 +1,13 @@
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Builds — Let-S APK Builder</title><link rel="stylesheet" href="assets/style.css?v=20"></head><body>
+<header class="nav"><div class="brand">Let-S <span>APK Builder</span></div><nav><a href="index.html">Home</a><a href="build.html">Build</a><a href="builds.html" class="active">My Builds</a><a href="downloads.html">Downloads</a><a href="admin-login.html" id="adminNavLink">Admin</a></nav></header>
+<main class="container container-wide"><div class="page-head"><div><h1>Build history</h1><p>Queued, running and completed APK/AAB builds.</p></div><a class="btn" href="build.html">＋ New build</a></div>
+<div class="toolbar"><button class="btn secondary" id="refresh">🔄 Refresh</button><select id="limit"><option>20</option><option>50</option><option>100</option></select></div><div id="message"></div><div class="card" id="list"><div class="empty-state">Loading builds…</div></div></main>
+<script src="assets/app.js?v=20"></script><script>
+const list=document.getElementById("list"),msg=document.getElementById("message"),limit=document.getElementById("limit");
+function esc(x){return escapeHtml(x)} function cls(s){return["queued","building","signing","uploading","completed","failed"].includes(s)?s:"queued"}
+async function load(){list.innerHTML='<div class="empty-state">Loading builds…</div>';msg.innerHTML="";
+try{const bs=await api.listBuilds(limit.value);if(!bs.length){list.innerHTML='<div class="empty-state">No builds yet.<br><br><a class="btn" href="build.html">Create your first build →</a></div>';return}
+list.innerHTML=bs.map(b=>{const c=b.config||{},t=artifactLabel(b.artifactType||c.buildFormat),a=c.appName||"Untitled app";return`<div class="build-row"><div class="build-main"><div class="build-title">${esc(a)} <span class="type-badge">${t}</span></div><div class="build-sub">${esc(t)} · ${esc(c.packageName||"")} · ${esc(formatDate(b.createdAt))}</div><div class="build-id">${esc(b.id)}</div></div><div class="build-side"><span class="pill ${cls(b.status)}">${esc(b.status)}</span>${b.durationMs?`<span class="build-duration">${esc(formatDuration(b.durationMs))}</span>`:""}<a class="btn ${b.status==="completed"?"":"secondary"} small" href="status.html?buildId=${encodeURIComponent(b.id)}">${b.status==="completed"?"View / Download":"View status"}</a></div></div>`}).join("")}
+catch(e){msg.innerHTML=`<div class="error-box">❌ ${esc(e.message)}<br><button class="btn secondary small" onclick="load()">Retry</button></div>`;list.innerHTML=""}}
+document.getElementById("refresh").onclick=load;limit.onchange=load;load();
+</script></body></html>
