@@ -85,10 +85,18 @@
   const errorEl = document.getElementById("loginError");
   const btn = document.getElementById("loginBtn");
 
-  // If already logged in, redirect
-  if (localStorage.getItem("admin_token")) {
-    location.href = "build.html";
-  }
+  // If already logged in, redirect — but only if the saved token is still valid.
+  // (An expired token used to bounce the user straight back to build.html forever.)
+  (async () => {
+    const t = localStorage.getItem("admin_token");
+    if (!t) return;
+    try {
+      const r = await fetch(`${API_BASE}/api/admin/me`, { headers: { Authorization: `Bearer ${t}` } });
+      if (r.ok) { location.href = "build.html"; return; }
+    } catch (_) { /* offline: fall through and show the form */ }
+    localStorage.removeItem("admin_token");
+    localStorage.removeItem("admin_user");
+  })();
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -115,7 +123,7 @@
 
       location.href = "build.html";
     } catch (err) {
-      errorEl.innerHTML = `<div class="error-box">${err.message}</div>`;
+      errorEl.innerHTML = `<div class="error-box">${escapeHtml(err.message)}</div>`;
       btn.disabled = false;
       btn.textContent = "Sign in";
     }

@@ -1011,7 +1011,7 @@
       try {
         codeModuleZips = await convertCodeModulesToZips();
       } catch (err) {
-        return showErr("Failed to convert code modules: " + err.message);
+        return showErr("Failed to convert code modules: " + escapeHtml(err.message));
       }
     }
 
@@ -1028,7 +1028,7 @@
           finalZipBase64 = result.base64;
           finalZipName = site.name + ".zip";
         } catch (err) {
-          return showErr("Site draft error: " + err.message);
+          return showErr("Site draft error: " + escapeHtml(err.message));
         }
       }
     }
@@ -1094,7 +1094,7 @@
       if (err.status === 403 && err.code === "ADMIN_REQUIRED") {
         showErr("🔐 Custom modules need admin login. <a href='admin-login.html'>Login here →</a>");
       } else {
-        showErr(err.message);
+        showErr(escapeHtml(err.message));
       }
     }
   });
